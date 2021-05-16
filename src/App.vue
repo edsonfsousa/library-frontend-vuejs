@@ -6,7 +6,6 @@
                     <span><b> WDA </b></span>
                     <span class="font-weight-ligt">Livraria</span>
                 </v-toolbar-title>
-                <!-- <v-avatar class="mr-10"  color="grey darken-1" size="32"></v-avatar> -->
 
                 <v-btn active-class="blue lighten-2" text rounded to="/"
                     ><v-icon size="24px"> mdi-home </v-icon> Inicio
