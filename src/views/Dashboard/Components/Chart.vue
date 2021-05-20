@@ -1,49 +1,39 @@
 <script>
-import { Bar } from 'vue-chartjs';
+import { Doughnut } from 'vue-chartjs';
+
+// Chart.defaults.global.legend.labels.usePointStyle = true;
 
 export default {
-    extends: Bar,
-
-    props: {
+    extends: Doughnut,
+    data: () => ({
         chartdata: {
-            type: Object,
-            default: null
+            labels: ['Usuários', 'Editoras', 'Livros', 'Alugueis'],
+            datasets: [
+                {
+                    label: 'My First Dataset',
+                    data: [50, 30, 50, 30],
+
+                    backgroundColor: '#006CFF'
+                }
+            ]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scaleFontColor: '#FFFFFF',
-            legend: {
-                labels: {
-                    fontColor: 'white',
-                    fontSize: 12
+            layout: {
+                padding: {
+                    left: 0
                 }
             },
-            scales: {
-                yAxes: [
-                    {
-                        ticks: {
-                            beginAtZero: true,
-                            display: true,
-                            fontColor: 'white',
-                            callback: function (value) {
-                                if (value % 1 === 0) {
-                                    return value;
-                                }
-                            }
-                        }
-                    }
-                ],
-                xAxes: [
-                    {
-                        ticks: {
-                            fontColor: 'white'
-                        }
-                    }
-                ]
-            }
+
+            responsive: true,
+            maintainAspectRatio: false,
+
+            legend: {
+                position: 'right'
+            },
+            scales: {}
         }
-    },
+    }),
+
     mounted() {
         this.renderChart(this.chartdata, this.options);
     }
