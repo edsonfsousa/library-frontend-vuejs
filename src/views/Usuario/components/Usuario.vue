@@ -2,7 +2,7 @@
     <div class="app">
         <!-- <router-view></router-view> -->
         <div class="container">
-            <v-dialog v-model="dialog2" max-width="500px">
+            <v-dialog v-model="dialog2" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
                         {{ nomeCerto }}

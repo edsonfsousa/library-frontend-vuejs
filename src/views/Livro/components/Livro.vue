@@ -3,7 +3,7 @@
         <!-- <router-view></router-view> -->
 
         <div class="container">
-            <v-dialog v-model="dialog2" max-width="500px">
+            <v-dialog v-model="dialog2" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
                         {{ nomeCerto }}
@@ -130,6 +130,12 @@
                                 {{ item.quant }}
                             </v-chip>
                         </template>
+                        <!-- eslint-disable-next-line -->
+                        <template v-slot:item.quantalugado="{ item }">
+                            <v-chip :color="getColor(item.quantalugado)" dark>
+                                {{ item.quantalugado }}
+                            </v-chip>
+                        </template>
                     </v-data-table>
                 </v-card>
             </tbody>
@@ -156,6 +162,7 @@ export default {
                 autor: '',
                 quant: '',
                 lancamento: '',
+                quantalugado: '',
                 editora: {
                     codEditora: ''
                 }
@@ -270,6 +277,7 @@ export default {
             this.livro.quant = livro.quant;
             this.livro.editora.codEditora = livro.codEditora;
             this.livro.lancamento = livro.lancamento;
+            this.livro.quantalugado = livro.quantalugado;
         },
         getLivroDefault() {
             return {

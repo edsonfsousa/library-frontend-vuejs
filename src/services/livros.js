@@ -12,5 +12,8 @@ export default {
     },
     apagar: (livro) => {
         return http.delete('/livros/deletar', { data: livro });
+    },
+    listardisp: () => {
+        return http.get('/livros/buscardisp');
     }
 };
