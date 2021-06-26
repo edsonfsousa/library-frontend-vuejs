@@ -3,7 +3,7 @@
         <!-- <router-view></router-view> -->
 
         <div class="container">
-            <v-dialog v-model="dialog2" max-width="500px">
+            <v-dialog v-model="dialog2" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
                         {{ nomeCerto }}
@@ -13,8 +13,9 @@
                             <!-- <v-text-field label="Nome do livro" v-model="livro.nomeLivro" :rules="[rules.required]" append-icon="mdi-book"></v-text-field> -->
                             <!-- <v-text-field label="Nome do usuario" v-model="aluguel.usuario.id" :rules="[rules.required]" append-icon="mdi-book-account"></v-text-field> -->
                             <v-select
+                                v-if="!edit"
                                 v-model="aluguel.livro.id"
-                                :items="livros"
+                                :items="livrosDisp"
                                 :item-text="'nomeLivro'"
                                 :item-value="'id'"
                                 :rules="[(v) => !!v || 'Livro é obrigatório']"
@@ -25,6 +26,7 @@
                             ></v-select>
 
                             <v-select
+                                v-if="!edit"
                                 v-model="aluguel.usuario.id"
                                 :items="usuarios"
                                 :item-text="'nome'"
@@ -37,6 +39,7 @@
                             ></v-select>
 
                             <v-menu
+                                v-if="!edit"
                                 ref="menu"
                                 v-model="menu"
                                 :close-on-content-click="false"
@@ -68,6 +71,7 @@
                             </v-menu>
 
                             <v-menu
+                                v-if="!edit"
                                 ref="menu2"
                                 v-model="menu2"
                                 :close-on-content-click="false"
@@ -97,6 +101,37 @@
                                     </v-btn>
                                 </v-date-picker>
                             </v-menu>
+                            <v-menu
+                                v-if="edit"
+                                ref="menu2"
+                                v-model="menu2"
+                                :close-on-content-click="false"
+                                :return-value.sync="aluguel.dataDevolucao"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="aluguel.dataDevolucao"
+                                        label="Data de devolução"
+                                        append-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        :rules="[(v) => !!v || 'Devolução é obrigatório']"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="aluguel.dataDevolucao" no-title scrollable>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn text color="primary" @click="menu2 = false"> Cancel </v-btn>
+
+                                    <v-btn text color="primary" @click="$refs.menu2.save(aluguel.dataDevolucao)">
+                                        OK
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
@@ -117,6 +152,7 @@
                             rounded
                             @click="
                                 (dialog2 = true),
+                                    (edit = false),
                                     (nomeCerto = 'Cadastrar Aluguel'),
                                     aluguelLimpar(),
                                     this.$refs.form.resetValidation()
@@ -145,12 +181,29 @@
                     >
                         <!-- eslint-disable-next-line -->
                         <template v-slot:item.acoes="{ item }">
-                            <v-btn color="primary" text small rounded @click="showEdit(item)">
-                                <v-icon dark> mdi-pencil </v-icon>
+                            <v-btn
+                                v-if="!item.dataDevolucao"
+                                color=" yellow darken-4"
+                                text
+                                small
+                                rounded
+                                @click="showEdit(item)"
+                            >
+                                <v-icon dark> mdi-book-check </v-icon>
                             </v-btn>
-                            <v-btn color="error" text small rounded @click="remover(item)">
+                            <v-btn v-if="item.dataDevolucao" color="error" text small rounded @click="remover(item)">
                                 <v-icon dark> mdi-delete </v-icon>
                             </v-btn>
+                        </template>
+                        <!-- eslint-disable-next-line -->
+                        <template v-slot:item.dataDevolucao="{ item }">
+                            {{
+                                item.dataDevolucao
+                                    ? item.dataDevolucao > item.dataPrevisao
+                                        ? `${item.dataDevolucao} (Com atraso)`
+                                        : `${item.dataDevolucao} (No prazo)`
+                                    : 'Não devolvido'
+                            }}
                         </template>
                     </v-data-table>
                 </v-card>
@@ -172,6 +225,7 @@ export default {
     name: 'Aluguel',
     data() {
         return {
+            livrosDisp: [],
             aluguel: {
                 id: '',
                 livro: {
@@ -181,7 +235,8 @@ export default {
                     id: ''
                 },
                 dataAluguel: '',
-                dataPrevisao: ''
+                dataPrevisao: '',
+                dataDevolucao: ''
             },
             usuario: {
                 id: '',
@@ -195,6 +250,7 @@ export default {
                 nomeLivro: '',
                 autor: '',
                 quant: '',
+                quantalugado: '',
                 lancamento: '',
                 editora: {
                     codEditora: ''
@@ -211,6 +267,7 @@ export default {
                 { text: 'USUARIO QUE ALUGOU', value: 'nome', class: 'blue accent-2, white--text' },
                 { text: 'DATA DO ALUGUEL', value: 'dataAluguel', class: 'blue accent-2, white--text' },
                 { text: 'PREVISÃO DE DEVOLUÇÃO', value: 'dataPrevisao', class: 'blue accent-2, white--text' },
+                { text: 'DATA DE DEVOLUÇÃO', value: 'dataDevolucao', class: 'blue accent-2, white--text' },
                 { text: 'AÇÕES', value: 'acoes', class: 'blue accent, white--text', sortable: false }
             ],
             date: new Date().toISOString().substr(0, 10),
@@ -219,6 +276,7 @@ export default {
             menu2: false,
             menu3: false,
             nomeCerto: '',
+            edit: false,
             dialog2: false,
             notifications: false,
             sound: true,
@@ -263,22 +321,53 @@ export default {
                 console.log('livros', resposta.data);
                 this.livros = resposta.data;
             });
+            Livro.listardisp().then((resposta) => {
+                console.log('livrosDisp', resposta.data);
+                this.livrosDisp = resposta.data;
+            });
+        },
+        getLivro(id) {
+            Livro.listar().then((resposta) => {
+                this.livros = resposta.data;
+                let livro = this.livros.find((item) => {
+                    return item.id == id;
+                });
+                console.log(livro);
+                if (livro.quantalugado == livro.quant) {
+                    console.log('Indisponível');
+                    return true;
+                } else {
+                    console.log(livro);
+                    console.log('Disponível');
+                    return false;
+                }
+            });
         },
 
         salvar() {
             if (this.$refs.form.validate()) {
                 if (!this.aluguel.id) {
-                    Aluguel.salvar(this.aluguel).then((resposta) => {
-                        // this.aluguel = {};
-                        this.aluguel = this.getAluguelDefault();
-                        console.log(resposta.data);
-                        Swal.fire('', 'Salvo com sucesso', 'success');
+                    if (this.aluguel.dataPrevisao < this.aluguel.dataAluguel) {
+                        Swal.fire('', 'Previsão de Devolução menor que a data de Aluguel', 'error');
                         this.listar();
                         this.dialog2 = false;
                         this.errors = {};
-                    });
+                    } else
+                        Aluguel.salvar(this.aluguel).then((resposta) => {
+                            // this.aluguel = {};
+                            this.aluguel = this.getAluguelDefault();
+                            console.log(resposta.data);
+                            Swal.fire('', 'Salvo com sucesso', 'success');
+                            this.listar();
+                            this.dialog2 = false;
+                            this.errors = {};
+                        });
+                } else if (this.aluguel.dataDevolucao < this.aluguel.dataAluguel) {
+                    Swal.fire('', 'Data de Devolução menor que a data de Aluguel', 'error');
+                    this.listar();
+                    this.dialog2 = false;
+                    this.errors = {};
                 } else {
-                    console.log(this.aluguel);
                     Aluguel.alterar(this.aluguel).then((resposta) => {
                         // this.aluguel = {};
                         this.aluguel = this.getAluguelDefault();
@@ -293,7 +382,8 @@ export default {
 
         showEdit(aluguel) {
             this.getAluguelDefault();
-            this.nomeCerto = 'Editar Aluguel';
+            this.edit = true;
+            this.nomeCerto = 'Devolver Aluguel';
             this.dialog2 = true;
             this.aluguel.id = aluguel.id;
             this.aluguel.livro.id = aluguel.livroId;

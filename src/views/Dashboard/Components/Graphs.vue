@@ -11,7 +11,7 @@
                 <v-card-text class="d-inline-flex">
                     <div>
                         VISÃO GERAL
-                        <h3 class="my-3">Indicação de pacientes</h3>
+                        <h3 class="my-3">Livros</h3>
                     </div>
                 </v-card-text>
 

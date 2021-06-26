@@ -1,13 +1,6 @@
 <template>
     <div class="chart-container">
-        <Panel header="Livros Mais Alugados">
-            <line-chart
-                style="position: relative; height: 50vh"
-                v-if="loaded"
-                :chartdata="chartdata"
-                :options="options"
-            />
-        </Panel>
+        <line-chart style="position: relative; height: 50vh" v-if="loaded" :chartdata="chartdata" :options="options" />
     </div>
 </template>
 

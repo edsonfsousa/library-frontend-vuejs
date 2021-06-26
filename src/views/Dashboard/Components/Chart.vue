@@ -1,10 +1,8 @@
 <script>
-import { Doughnut } from 'vue-chartjs';
-
-// Chart.defaults.global.legend.labels.usePointStyle = true;
-
+import { Bar } from 'vue-chartjs';
+const axios = require('axios');
 export default {
-    extends: Doughnut,
+    extends: Bar,
     data: () => ({
         chartdata: {
             labels: ['Usuários', 'Editoras', 'Livros', 'Alugueis'],
@@ -23,19 +21,80 @@ export default {
                     left: 0
                 }
             },
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                            display: true,
+                            fontColor: 'white',
+                            callback: function (value) {
+                                if (value % 1 === 0) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                ],
+                xAxes: [
+                    {
+                        ticks: {
+                            fontColor: 'white'
+                        }
+                    }
+                ]
+            },
 
             responsive: true,
             maintainAspectRatio: false,
 
             legend: {
                 position: 'right'
-            },
-            scales: {}
+            }
         }
     }),
 
-    mounted() {
+    async mounted() {
+        try {
+            const { data } = await axios.get('https://livraria-restapi.herokuapp.com/livros/mais-alugados');
+            this.chartdata = data;
+            this.loaded = true;
+            this.fillData();
+            console.log(this.chartdata);
+        } catch (e) {
+            console.error(e);
+        }
         this.renderChart(this.chartdata, this.options);
+    },
+    methods: {
+        fillData() {
+            this.chartdata = {
+                labels: ['Quantidade Total Alugada'],
+                datasets: [
+                    {
+                        label: this.chartdata[0].nome,
+                        data: [this.chartdata[0].qtdAlugada],
+                        backgroundColor: '#883696',
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    },
+                    {
+                        label: this.chartdata[1].nome,
+                        data: [this.chartdata[1].qtdAlugada],
+                        backgroundColor: '#d24dff',
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    },
+                    {
+                        label: this.chartdata[2].nome,
+                        data: [this.chartdata[2].qtdAlugada],
+                        backgroundColor: '#a366ff',
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }
+                ]
+            };
+        }
     }
 };
 </script>
