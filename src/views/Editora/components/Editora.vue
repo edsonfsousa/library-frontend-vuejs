@@ -3,7 +3,7 @@
         <!-- <router-view></router-view> -->
 
         <div class="container">
-            <v-dialog v-model="dialog2" max-width="500px">
+            <v-dialog v-model="dialog2" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
                         {{ nomeCerto }}
@@ -14,15 +14,15 @@
                             <v-text-field
                                 label="Nome da Editora"
                                 v-model="editora.nomeEditora"
-                                :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :rules="[rules.required, rules.maxEditora, rules.min]"
+                                :counter="80"
                                 append-icon="mdi-bookshelf"
                             ></v-text-field>
                             <v-text-field
                                 label="Cidade da Editora"
                                 v-model="editora.cidade"
                                 :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :counter="50"
                                 append-icon="mdi-map-marker"
                             ></v-text-field>
                         </v-form>
@@ -139,7 +139,8 @@ export default {
             widgets: false,
             rules: {
                 required: (value) => !!value || 'Este campo é obrigatório.',
-                max: (value) => value.length <= 120 || 'Máximo de 120 caracteres.',
+                max: (value) => value.length <= 50 || 'Máximo de 50 caracteres.',
+                maxEditora: (value) => value.length <= 80 || 'Máximo de 80 caracteres.',
                 min: (value) => value.length >= 3 || 'Mínimo de 3 caracteres.'
             }
         };
@@ -217,11 +218,19 @@ export default {
                 denyButtonText: 'Não apagar'
             }).then((resposta) => {
                 if (resposta.isConfirmed) {
-                    Editora.apagar(editora).then((resposta) => {
-                        console.log(resposta.data);
-                        Swal.fire('Apagado com sucesso', '', 'success');
-                        this.listar();
-                    });
+                    Editora.apagar(editora)
+                        .then((resposta) => {
+                            console.log(resposta.data);
+                            Swal.fire('Apagado com sucesso', '', 'success');
+                            this.listar();
+                        })
+                        .catch((error) => {
+                            Swal.fire('', 'Editora com livros cadastrados', 'error');
+                            this.listar();
+                            console.log(error.data);
+                            this.dialog2 = false;
+                            this.errors = {};
+                        });
                 } else if (resposta.isDenied) {
                     Swal.fire('Não apagado', '', 'info');
                 }

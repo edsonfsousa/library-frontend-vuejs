@@ -7,7 +7,7 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import(/* webpackChunkName: "Testes" */ '../components/Home.vue')
+        component: () => import(/* webpackChunkName: "Testes" */ '../views/Dashboard/DashboardView.vue')
     },
     {
         path: '/usuario',
@@ -17,7 +17,7 @@ const routes = [
     {
         path: '/editora',
         name: 'Editora',
-        component: () => import(/* webpackChunkName: "Testes" */ '../views/Editora.vue/EditoraView.vue')
+        component: () => import(/* webpackChunkName: "Testes" */ '../views/Editora/EditoraView.vue')
     },
     {
         path: '/livro',
@@ -33,11 +33,6 @@ const routes = [
         path: '/estoque',
         name: 'Testes',
         component: () => import(/* webpackChunkName: "Testes" */ '../components/Testes.vue')
-    },
-    {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "Dashboard" */ '../views/Dashboard/DashboardView.vue')
     }
 ];
 

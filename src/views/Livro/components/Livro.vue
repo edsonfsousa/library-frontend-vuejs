@@ -3,7 +3,7 @@
         <!-- <router-view></router-view> -->
 
         <div class="container">
-            <v-dialog v-model="dialog2" max-width="500px">
+            <v-dialog v-model="dialog2" persistent max-width="500px">
                 <v-card>
                     <v-card-title>
                         {{ nomeCerto }}
@@ -20,14 +20,15 @@
                             <v-text-field
                                 label="Nome do autor"
                                 v-model="livro.autor"
-                                :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :rules="[rules.required, rules.maxAutor, rules.min]"
+                                :counter="35"
                                 append-icon="mdi-account-box-multiple"
                             ></v-text-field>
                             <v-text-field
                                 label="Quantidade"
+                                type="number"
                                 v-model="livro.quant"
-                                :rules="[rules.required]"
+                                :rules="[rules.required, rules.minNumber]"
                                 append-icon="mdi-numeric"
                             ></v-text-field>
                             <v-select
@@ -130,6 +131,12 @@
                                 {{ item.quant }}
                             </v-chip>
                         </template>
+                        <!-- eslint-disable-next-line -->
+                        <template v-slot:item.quantalugado="{ item }">
+                            <v-chip :color="getColor(item.quantalugado)" dark>
+                                {{ item.quantalugado }}
+                            </v-chip>
+                        </template>
                     </v-data-table>
                 </v-card>
             </tbody>
@@ -156,6 +163,7 @@ export default {
                 autor: '',
                 quant: '',
                 lancamento: '',
+                quantalugado: '',
                 editora: {
                     codEditora: ''
                 }
@@ -190,7 +198,9 @@ export default {
             rules: {
                 required: (value) => !!value || 'Este campo é obrigatório.',
                 max: (value) => value.length <= 120 || 'Máximo de 120 caracteres.',
-                min: (value) => value.length >= 3 || 'Mínimo de 3 caracteres.'
+                maxAutor: (value) => value.length <= 35 || 'Máximo de 35 caracteres.',
+                min: (value) => value.length >= 3 || 'Mínimo de 3 caracteres.',
+                minNumber: (value) => value >= 1 || 'No mínimo 1 é necessário.'
             },
             picker: new Date().toISOString().substr(0, 10)
         };
@@ -270,6 +280,7 @@ export default {
             this.livro.quant = livro.quant;
             this.livro.editora.codEditora = livro.codEditora;
             this.livro.lancamento = livro.lancamento;
+            this.livro.quantalugado = livro.quantalugado;
         },
         getLivroDefault() {
             return {

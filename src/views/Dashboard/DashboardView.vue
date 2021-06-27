@@ -1,16 +1,33 @@
 <template>
     <v-app class="pagina">
         <div class="viewPagina">
-            <Dashboard></Dashboard>
+            <Cards></Cards>
+        </div>
+        <div>
+            <Graphs></Graphs>
         </div>
     </v-app>
 </template>
 <script>
-import Dashboard from './Components/Dashboard';
+import Livro from '../../services/livros';
+import Graphs from './Components/Graphs';
+import Cards from './Components/Cards';
 export default {
     data: () => ({}),
     components: {
-        Dashboard
+        Cards,
+        Graphs
+    },
+    mounted() {
+        this.listar();
+    },
+    methods: {
+        listar() {
+            Livro.listar().then((resposta) => {
+                console.log('livros', resposta.data);
+                this.livros = resposta.data;
+            });
+        }
     }
 };
 </script>
