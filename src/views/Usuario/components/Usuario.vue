@@ -14,21 +14,21 @@
                                 label="Nome do Usuario"
                                 v-model="usuario.nome"
                                 :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :counter="35"
                                 append-icon="mdi-account"
                             ></v-text-field>
                             <v-text-field
                                 label="Cidade do Usuario"
                                 v-model="usuario.cidade"
                                 :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :counter="35"
                                 append-icon="mdi-city"
                             ></v-text-field>
                             <v-text-field
                                 label="Endereço do Usuario"
                                 v-model="usuario.endereco"
                                 :rules="[rules.required, rules.max, rules.min]"
-                                :counter="120"
+                                :counter="35"
                                 append-icon="mdi-home-city"
                             ></v-text-field>
                             <v-text-field
@@ -136,7 +136,7 @@ export default {
             widgets: false,
             rules: {
                 required: (value) => !!value || 'Este campo é obrigatório.',
-                max: (value) => value.length <= 120 || 'Máximo de 120 caracteres.',
+                max: (value) => value.length <= 35 || 'Máximo de 35 caracteres.',
                 min: (value) => value.length >= 3 || 'Mínimo de 3 caracteres.',
                 email: (value) => {
                     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

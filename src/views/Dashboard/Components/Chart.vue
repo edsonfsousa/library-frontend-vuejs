@@ -56,7 +56,7 @@ export default {
 
     async mounted() {
         try {
-            const { data } = await axios.get('https://livraria-restapi.herokuapp.com/livros/mais-alugados');
+            const { data } = await axios.get('https://api-spring-livraria.herokuapp.com/livros/buscartodos');
             this.chartdata = data;
             this.loaded = true;
             this.fillData();
@@ -69,26 +69,26 @@ export default {
     methods: {
         fillData() {
             this.chartdata = {
-                labels: ['Quantidade Total Alugada'],
+                labels: ['Quantidade Alugada'],
                 datasets: [
                     {
-                        label: this.chartdata[0].nome,
-                        data: [this.chartdata[0].qtdAlugada],
-                        backgroundColor: '#883696',
+                        label: this.chartdata[0].nomeLivro,
+                        data: [this.chartdata[0].quantalugado],
+                        backgroundColor: '#05a8ff',
                         borderColor: '#ffffff',
                         borderWidth: 2
                     },
                     {
-                        label: this.chartdata[1].nome,
-                        data: [this.chartdata[1].qtdAlugada],
-                        backgroundColor: '#d24dff',
+                        label: this.chartdata[1].nomeLivro,
+                        data: [this.chartdata[1].quantalugado],
+                        backgroundColor: '#1375a8',
                         borderColor: '#ffffff',
                         borderWidth: 2
                     },
                     {
-                        label: this.chartdata[2].nome,
-                        data: [this.chartdata[2].qtdAlugada],
-                        backgroundColor: '#a366ff',
+                        label: this.chartdata[2].nomeLivro,
+                        data: [this.chartdata[2].quantalugado],
+                        backgroundColor: '#004b73',
                         borderColor: '#ffffff',
                         borderWidth: 2
                     }

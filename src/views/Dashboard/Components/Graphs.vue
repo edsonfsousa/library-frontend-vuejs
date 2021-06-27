@@ -1,5 +1,5 @@
 <template>
-    <v-row class="d-flex justify-space-between mx-12">
+    <v-row class="d-flex justify-center mx-12">
         <v-col cols="12" sm="6">
             <v-card
                 class=".d-inline-flex my-12"
@@ -11,7 +11,7 @@
                 <v-card-text class="d-inline-flex">
                     <div>
                         VISÃO GERAL
-                        <h3 class="my-3">Livros</h3>
+                        <h3 class="my-3">Livros mais alugados:</h3>
                     </div>
                 </v-card-text>
 
