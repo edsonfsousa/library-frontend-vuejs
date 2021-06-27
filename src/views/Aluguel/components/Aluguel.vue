@@ -348,7 +348,7 @@ export default {
             if (this.$refs.form.validate()) {
                 if (!this.aluguel.id) {
                     if (this.aluguel.dataPrevisao < this.aluguel.dataAluguel) {
-                        Swal.fire('', 'Previsão de Devolução menor que a data de Aluguel', 'error');
+                        Swal.fire('', 'Previsão de Devolução anterior a data de Aluguel', 'error');
                         this.listar();
                         this.dialog2 = false;
                         this.errors = {};
@@ -363,7 +363,7 @@ export default {
                             this.errors = {};
                         });
                 } else if (this.aluguel.dataDevolucao < this.aluguel.dataAluguel) {
-                    Swal.fire('', 'Data de Devolução menor que a data de Aluguel', 'error');
+                    Swal.fire('', 'Data de Devolução anterior a data de Aluguel', 'error');
                     this.listar();
                     this.dialog2 = false;
                     this.errors = {};
