@@ -284,15 +284,21 @@ export default {
                         this.errors = {};
                     });
                 } else {
-                    Livro.alterar(this.livro).then((resposta) => {
-                        // this.livro = {};
-                        this.livro = this.getLivroDefault();
-                        console.log(resposta.data);
-                        Swal.fire('', 'Alterado com sucesso!', 'success');
+                    if (this.livro.quant < this.livro.quantalugado) {
+                        Swal.fire('', 'Quantidade não pode ser menor que a já alugada!', 'error');
                         this.listar();
                         this.dialog2 = false;
                         this.errors = {};
-                    });
+                    } else
+                        Livro.alterar(this.livro).then((resposta) => {
+                            // this.livro = {};
+                            this.livro = this.getLivroDefault();
+                            console.log(resposta.data);
+                            Swal.fire('', 'Alterado com sucesso!', 'success');
+                            this.listar();
+                            this.dialog2 = false;
+                            this.errors = {};
+                        });
                 }
             }
         },
