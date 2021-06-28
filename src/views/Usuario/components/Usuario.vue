@@ -85,12 +85,38 @@
                     >
                         <!-- eslint-disable-next-line -->
                         <template v-slot:item.acoes="{ item }">
-                            <v-btn color="primary" text small rounded @click="showEdit(item)">
-                                <v-icon dark> mdi-pencil </v-icon>
-                            </v-btn>
-                            <v-btn color="error" text small rounded @click="remover(item)">
-                                <v-icon dark> mdi-delete </v-icon>
-                            </v-btn>
+                            <v-tooltip top color="#0061A3">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        color="primary"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        text
+                                        small
+                                        rounded
+                                        @click="showEdit(item)"
+                                    >
+                                        <v-icon dark> mdi-pencil </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Editar</span>
+                            </v-tooltip>
+                            <v-tooltip top color="red">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        color="error"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        text
+                                        small
+                                        rounded
+                                        @click="remover(item)"
+                                    >
+                                        <v-icon dark> mdi-delete </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Remover</span>
+                            </v-tooltip>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -182,7 +208,7 @@ export default {
                     Usuario.salvar(this.usuario).then((resposta) => {
                         this.usuario = {};
                         console.log(resposta.data);
-                        Swal.fire('', 'Salvo com sucesso', 'success');
+                        Swal.fire('', 'Salvo com sucesso!', 'success');
                         this.listar();
                         this.dialog2 = false;
                     });
@@ -190,7 +216,7 @@ export default {
                     Usuario.alterar(this.usuario).then((resposta) => {
                         this.usuario = {};
                         console.log(resposta.data);
-                        Swal.fire('', 'Alterado com sucesso', 'success');
+                        Swal.fire('', 'Alterado com sucesso!', 'success');
                         this.listar();
                         this.dialog2 = false;
                     });
@@ -224,13 +250,21 @@ export default {
                 denyButtonText: 'Não apagar'
             }).then((resposta) => {
                 if (resposta.isConfirmed) {
-                    Usuario.apagar(usuario).then((resposta) => {
-                        console.log(resposta.data);
-                        Swal.fire('Apagado com sucesso', '', 'success');
-                        this.listar();
-                    });
+                    Usuario.apagar(usuario)
+                        .then((resposta) => {
+                            console.log(resposta.data);
+                            Swal.fire('Apagado com sucesso!', '', 'success');
+                            this.listar();
+                        })
+                        .catch((error) => {
+                            Swal.fire('', 'Usuário com livros alugados, não pode ser apagado!', 'error');
+                            this.listar();
+                            console.log(error.data);
+                            this.dialog2 = false;
+                            this.errors = {};
+                        });
                 } else if (resposta.isDenied) {
-                    Swal.fire('Não apagado', '', 'info');
+                    Swal.fire('Não apagado!', '', 'info');
                 }
             });
         }
