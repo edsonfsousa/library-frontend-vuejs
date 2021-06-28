@@ -181,19 +181,40 @@
                     >
                         <!-- eslint-disable-next-line -->
                         <template v-slot:item.acoes="{ item }">
-                            <v-btn
-                                v-if="!item.dataDevolucao"
-                                color=" yellow darken-4"
-                                text
-                                small
-                                rounded
-                                @click="showEdit(item)"
-                            >
-                                <v-icon dark> mdi-book-check </v-icon>
-                            </v-btn>
-                            <v-btn v-if="item.dataDevolucao" color="error" text small rounded @click="remover(item)">
-                                <v-icon dark> mdi-delete </v-icon>
-                            </v-btn>
+                            <v-tooltip top color="yellow darken-4">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        v-if="!item.dataDevolucao"
+                                        color=" yellow darken-4"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        text
+                                        small
+                                        rounded
+                                        @click="showEdit(item)"
+                                    >
+                                        <v-icon dark> mdi-book-check </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Devolver</span>
+                            </v-tooltip>
+                            <v-tooltip top color="red">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        v-if="item.dataDevolucao"
+                                        color="error"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        text
+                                        small
+                                        rounded
+                                        @click="remover(item)"
+                                    >
+                                        <v-icon dark> mdi-delete </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Remover</span>
+                            </v-tooltip>
                         </template>
                         <!-- eslint-disable-next-line -->
                         <template v-slot:item.dataDevolucao="{ item }">
@@ -348,7 +369,7 @@ export default {
             if (this.$refs.form.validate()) {
                 if (!this.aluguel.id) {
                     if (this.aluguel.dataPrevisao < this.aluguel.dataAluguel) {
-                        Swal.fire('', 'Previsão de Devolução anterior a data de Aluguel', 'error');
+                        Swal.fire('', 'Previsão de Devolução anterior a data de Aluguel!', 'error');
                         this.listar();
                         this.dialog2 = false;
                         this.errors = {};
@@ -357,13 +378,13 @@ export default {
                             // this.aluguel = {};
                             this.aluguel = this.getAluguelDefault();
                             console.log(resposta.data);
-                            Swal.fire('', 'Salvo com sucesso', 'success');
+                            Swal.fire('', 'Salvo com sucesso!', 'success');
                             this.listar();
                             this.dialog2 = false;
                             this.errors = {};
                         });
                 } else if (this.aluguel.dataDevolucao < this.aluguel.dataAluguel) {
-                    Swal.fire('', 'Data de Devolução anterior a data de Aluguel', 'error');
+                    Swal.fire('', 'Data de Devolução anterior a data de Aluguel!', 'error');
                     this.listar();
                     this.dialog2 = false;
                     this.errors = {};
@@ -372,7 +393,7 @@ export default {
                         // this.aluguel = {};
                         this.aluguel = this.getAluguelDefault();
                         console.log(resposta.data);
-                        Swal.fire('', 'Alterado com sucesso', 'success');
+                        Swal.fire('', 'Alterado com sucesso!', 'success');
                         this.listar();
                         this.dialog2 = false;
                     });
@@ -445,11 +466,11 @@ export default {
                 if (resposta.isConfirmed) {
                     Aluguel.apagar(aluguel).then((resposta) => {
                         console.log(resposta.data);
-                        Swal.fire('Apagado com sucesso', '', 'success');
+                        Swal.fire('Apagado com sucesso!', '', 'success');
                         this.listar();
                     });
                 } else if (resposta.isDenied) {
-                    Swal.fire('Não apagado', '', 'info');
+                    Swal.fire('Não apagado!', '', 'info');
                 }
             });
         }
