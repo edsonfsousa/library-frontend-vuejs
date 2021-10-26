@@ -63,7 +63,7 @@
                                         :rules="[(v) => !!v || 'Lançamento é obrigatório']"
                                     ></v-text-field>
                                 </template>
-                                <v-date-picker v-model="livro.lancamento" no-title scrollable>
+                                <v-date-picker v-model="livro.lancamento" no-title scrollable :max="nowDate">
                                     <v-spacer></v-spacer>
 
                                     <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
@@ -213,6 +213,7 @@ export default {
                 { text: 'AÇÕES', value: 'acoes', class: 'blue accent, white--text', sortable: false }
             ],
             date: new Date().toISOString().substr(0, 10),
+            nowDate: new Date().toISOString().slice(0, 10),
             menu: false,
             modal: false,
             menu2: false,
