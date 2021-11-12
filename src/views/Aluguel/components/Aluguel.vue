@@ -140,98 +140,102 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <tbody>
-                <v-card>
-                    <v-card-title>
-                        Alugueis
-                        <v-divider class="mx-4" inset vertical></v-divider
-                        ><v-btn
-                            class="ma-2"
-                            dark
-                            color="blue"
-                            rounded
-                            @click="
-                                (dialog2 = true),
-                                    (edit = false),
-                                    (nomeCerto = 'Cadastrar Aluguel'),
-                                    aluguelLimpar(),
-                                    this.$refs.form.resetValidation()
-                            "
-                            >Novo
-                            <v-icon dark> mdi-plus </v-icon>
-                        </v-btn>
-                        <v-spacer></v-spacer>
+            <div class="d-flex flex-column align-center">
+                <tbody>
+                    <v-card elevation="3" style="border: 1px solid #1d87b5">
+                        <v-card-title>
+                            Alugueis
+                            <v-divider class="mx-4" inset vertical></v-divider
+                            ><v-btn
+                                class="ma-2"
+                                dark
+                                color="blue"
+                                rounded
+                                @click="
+                                    (dialog2 = true),
+                                        (edit = false),
+                                        (nomeCerto = 'Cadastrar Aluguel'),
+                                        aluguelLimpar(),
+                                        this.$refs.form.resetValidation()
+                                "
+                                >Novo
+                                <v-icon dark> mdi-plus </v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
 
-                        <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Pesquisa"
-                            single-line
-                            hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                        :headers="headers"
-                        :items="aluguels"
-                        :items-per-page="5"
-                        :search="search"
-                        class="elevation-1"
-                        loading="items"
-                        loading-text="Carregando dados... Aguarde!"
-                    >
-                        <!-- eslint-disable-next-line -->
-                        <template v-slot:item.acoes="{ item }">
-                            <v-tooltip top color="yellow darken-4">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        v-if="!item.dataDevolucao"
-                                        color=" yellow darken-4"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        text
-                                        small
-                                        rounded
-                                        @click="showEdit(item)"
-                                    >
-                                        <v-icon dark> mdi-book-check </v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Devolver</span>
-                            </v-tooltip>
-                            <v-tooltip top color="red">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        v-if="item.dataDevolucao"
-                                        color="error"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        text
-                                        small
-                                        rounded
-                                        @click="remover(item)"
-                                    >
-                                        <v-icon dark> mdi-delete </v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Remover</span>
-                            </v-tooltip>
-                        </template>
-                        <!-- eslint-disable-next-line -->
-                        <template v-slot:item.dataDevolucao="{ item }">
-                            {{
-                                item.dataDevolucao
-                                    ? item.dataDevolucao > item.dataPrevisao
-                                        ? `${item.dataDevolucao} (Com atraso)`
-                                        : `${item.dataDevolucao} (No prazo)`
-                                    : 'Não devolvido'
-                            }}
-                        </template>
-                    </v-data-table>
-                </v-card>
-            </tbody>
-            <v-btn class="ma-2" color="blue" dark @click="irParaInicio">
-                <v-icon dark left> mdi-arrow-left </v-icon>Voltar
-            </v-btn>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Pesquisa"
+                                single-line
+                                hide-details
+                            ></v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                            :headers="headers"
+                            :items="aluguels"
+                            :items-per-page="5"
+                            :search="search"
+                            class="elevation-1"
+                            loading="items"
+                            loading-text="Carregando dados... Aguarde!"
+                        >
+                            <!-- eslint-disable-next-line -->
+                            <template v-slot:item.acoes="{ item }">
+                                <v-tooltip top color="yellow darken-4">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            v-if="!item.dataDevolucao"
+                                            color=" yellow darken-4"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="showEdit(item)"
+                                        >
+                                            <v-icon dark> mdi-book-check </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Devolver</span>
+                                </v-tooltip>
+                                <v-tooltip top color="red">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            v-if="item.dataDevolucao"
+                                            color="error"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="remover(item)"
+                                        >
+                                            <v-icon dark> mdi-delete </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Remover</span>
+                                </v-tooltip>
+                            </template>
+                            <!-- eslint-disable-next-line -->
+                            <template v-slot:item.dataDevolucao="{ item }">
+                                {{
+                                    item.dataDevolucao
+                                        ? item.dataDevolucao > item.dataPrevisao
+                                            ? `${item.dataDevolucao} (Com atraso)`
+                                            : `${item.dataDevolucao} (No prazo)`
+                                        : 'Não devolvido'
+                                }}
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                    <div class="align-self-start">
+                        <v-btn class="ma-2" color="blue" dark @click="irParaInicio">
+                            <v-icon dark left> mdi-arrow-left </v-icon>Voltar
+                        </v-btn>
+                    </div>
+                </tbody>
+            </div>
         </div>
     </div>
 </template>
