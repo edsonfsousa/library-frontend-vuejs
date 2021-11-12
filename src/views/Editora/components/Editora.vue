@@ -34,85 +34,88 @@
                 </v-card>
             </v-dialog>
 
-            <tbody>
-                <v-card>
-                    <v-card-title>
-                        Editoras
-                        <v-divider class="mx-4" inset vertical></v-divider
-                        ><v-btn
-                            class="ma-2"
-                            dark
-                            color="blue"
-                            rounded
-                            @click="
-                                (dialog2 = true),
-                                    (nomeCerto = 'Cadastrar Editora'),
-                                    editoraLimpar(),
-                                    this.$refs.form.resetValidation()
-                            "
-                            >Nova
-                            <v-icon dark> mdi-plus </v-icon>
+            <div class="d-flex flex-column align-center">
+                <tbody>
+                    <v-card elevation="3" style="border: 1px solid #1d87b5">
+                        <v-card-title>
+                            Editoras
+                            <v-divider class="mx-4" inset vertical></v-divider
+                            ><v-btn
+                                class="ma-2"
+                                dark
+                                color="blue"
+                                rounded
+                                @click="
+                                    (dialog2 = true),
+                                        (nomeCerto = 'Cadastrar Editora'),
+                                        editoraLimpar(),
+                                        this.$refs.form.resetValidation()
+                                "
+                                >Nova
+                                <v-icon dark> mdi-plus </v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Pesquisa"
+                                single-line
+                                hide-details
+                            ></v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                            :headers="headers"
+                            :items="editoras"
+                            :items-per-page="5"
+                            :search="search"
+                            class="elevation-1"
+                            loading="items"
+                            loading-text="Carregando dados... Aguarde!"
+                        >
+                            <!-- eslint-disable-next-line -->
+                            <template v-slot:item.acoes="{ item }">
+                                <v-tooltip top color="#0061A3">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="primary"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="showEdit(item)"
+                                        >
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Editar</span>
+                                </v-tooltip>
+                                <v-tooltip top color="red">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="error"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="remover(item)"
+                                        >
+                                            <v-icon dark> mdi-delete </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Remover</span>
+                                </v-tooltip>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                    <div class="align-self-start">
+                        <v-btn class="ma-2" color="blue" dark @click="irParaInicio">
+                            <v-icon dark left> mdi-arrow-left </v-icon>Voltar
                         </v-btn>
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Pesquisa"
-                            single-line
-                            hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                        :headers="headers"
-                        :items="editoras"
-                        :items-per-page="5"
-                        :search="search"
-                        class="elevation-1"
-                        loading="items"
-                        loading-text="Carregando dados... Aguarde!"
-                    >
-                        <!-- eslint-disable-next-line -->
-                        <template v-slot:item.acoes="{ item }">
-                            <v-tooltip top color="#0061A3">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        color="primary"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        text
-                                        small
-                                        rounded
-                                        @click="showEdit(item)"
-                                    >
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Editar</span>
-                            </v-tooltip>
-                            <v-tooltip top color="red">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        color="error"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        text
-                                        small
-                                        rounded
-                                        @click="remover(item)"
-                                    >
-                                        <v-icon dark> mdi-delete </v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Remover</span>
-                            </v-tooltip>
-                        </template>
-                    </v-data-table>
-                </v-card>
-            </tbody>
-
-            <v-btn class="ma-2" color="blue" dark @click="irParaInicio">
-                <v-icon dark left> mdi-arrow-left </v-icon>Voltar
-            </v-btn>
+                    </div>
+                </tbody>
+            </div>
         </div>
     </div>
 </template>
