@@ -1,6 +1,10 @@
-# biblioteca
+# _library-frontend-vuejs_
 
-## Project setup
+---
+
+> _It is the Frontend of a library management and logistics application whose main objective is to rent books made by customers and to manage the bookstore, having standard book logistics functions within the application and resources such as Dashboard, being used for better bookstore monitoring. It has its Backend made in Java with Spring Boot, and Frontend built in JavaScript with Vuejs, in addition to other libraries, technologies and utility tools._
+
+## _Project setup_
 ```
 npm install
 ```
@@ -22,3 +26,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## _Contributing_
+If you want, you can contribute in
+[issue tracker](https://github.com/wda-trainee/startuplog-frontend/issues/new/choose).
+
+Developed by
+[Edson Fernandes](https://github.com/edsonfsousa) with [Vuejs](https://vuejs.org/) .
