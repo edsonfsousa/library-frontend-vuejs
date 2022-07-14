@@ -37,11 +37,11 @@ docker container rm -f name-container
 ---
 
 ```
-docker image build -t edsonfsousa/name-container:v1 .
+docker image build -t edsonfsousa/name-image:v1 .
 ```
 
 ```
-docker container run -d -p 8080:80 --name edsonfsousa/name-container edsonfsousa/name-container:v1
+docker container run -d -p 8087:80 --name name-container edsonfsousa/name-image:v1
 ```
 
 ## Commands used to deploy the application with docker-compose
