@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+    library-frontend:
+        container_name: library-frontend
+        image: edsonfsousa/library-frontend:v1
+        build: .
+        ports:
+            - '8087:80'
